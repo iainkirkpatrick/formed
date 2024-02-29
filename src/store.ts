@@ -16,10 +16,11 @@ export const currentEditingBlockIndexAtom = atom<number | null>(null)
 // derived
 export const currentEditingBlockWithMetadataAtom = atom(get => {
   const currentEditingBlockIndex = get(currentEditingBlockIndexAtom)
-  console.log({ currentEditingBlockIndex })
   if (!!currentEditingBlockIndex) {
     return get(blockEditsAtom)[currentEditingBlockIndex - 1]
   } else {
     return null
   }
 })
+
+export const currentDraggingBlockIdAtom = atom<string | null>(null)

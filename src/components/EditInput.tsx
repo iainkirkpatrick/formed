@@ -14,15 +14,19 @@ export default function EditInput ({
 	const [block] = useAtom(blockAtom)
 
 	return (
-		<div className='flex flex-col items-start gap-2'>
-			<div className='flex flex-col'>
-				{!!block.label && (
-					<label className='font-semibold'>{block.label}</label>
-				)}
-				{!!block.helpText && (
-					<p className='text-sm italic'>{block.helpText}</p>
-				)}
-			</div>
+		<div
+			className='flex flex-col items-start gap-2'
+		>
+			{(!!block.label || !!block.helpText) && (
+				<div className='flex flex-col'>
+					{!!block.label && (
+						<label className='font-semibold'>{block.label}</label>
+					)}
+					{!!block.helpText && (
+						<p className='text-sm italic'>{block.helpText}</p>
+					)}
+				</div>
+			)}
 			<Input placeholder={block.placeholder} />
 		</div>
 	)

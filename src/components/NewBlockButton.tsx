@@ -17,7 +17,7 @@ export default function NewBlockButton ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className='p-2' variant="outline">
+        <Button className='my-4 p-2' variant="outline">
           <PlusIcon width={24} height={24} />
         </Button>
       </DropdownMenuTrigger>

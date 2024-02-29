@@ -12,7 +12,6 @@ export default function EditInputProperties ({
 	blockAtom
 }: EditInputPropertiesProps) {
 	const [block, setBlock] = useAtom(blockAtom)
-	console.log('label', block.label)
 
 	return (
 		<div className='flex flex-col w-full gap-4'>
