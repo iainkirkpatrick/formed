@@ -9,6 +9,8 @@ import EditSelectProperties from './components/EditSelectProperties';
 
 import { blockEditsAtom, currentEditingBlockIndexAtom, currentEditingBlockWithMetadataAtom } from './store';
 
+import { genId } from './utils/genId';
+
 // import {Draggable} from './Draggable';
 // import {Droppable} from './Droppable';
 
@@ -25,20 +27,29 @@ function App() {
         <h1 className='font-semibold text-4xl'>FORMED</h1>
         <div className='flex w-full gap-24'>
           <div className='my-4 flex flex-col w-3/5 gap-4'>
-            {blockEdits.map(b => {
+            {blockEdits.map((b, i) => {
               if (b.type === 'input') {
                 return (
-                  <div className='p-4 border'>
+                  // TODO: figure out usability issues with button here (i.e text highlighting of label)
+                  <button
+                    key={b.id}
+                    className='p-4 border hover:border-4'
+                    onClick={() => setEditingBlockIndex(i + 1)}
+                  >
                     {/* @ts-ignore: TODO figure out type narrowing with Atom */}
                     <EditInput blockAtom={b.blockAtom} />
-                  </div>
+                  </button>
                 ) 
               } else if (b.type === 'select') {
                 return (
-                  <div className='p-4 border'>
+                  <button
+                    key={b.id}
+                    className='p-4 border hover:border-4'
+                    onClick={() => setEditingBlockIndex(i + 1)}
+                  >
                     {/* @ts-ignore: TODO figure out type narrowing with Atom */}
                     <EditSelect blockAtom={b.blockAtom} />
-                  </div>
+                  </button>
                 )
               } else {
                 return <p>Missing block type!</p>
@@ -46,7 +57,11 @@ function App() {
             })}
             <NewBlockButton
               onAdd={(block) => {
-                const newBlockEdits = [...blockEdits, { type: block.type, blockAtom: atom(block) }]
+                const newBlockEdits = [...blockEdits, {
+                  id: genId(),
+                  type: block.type,
+                  blockAtom: atom(block)
+                }]
                 setBlockEdits(newBlockEdits)
                 setEditingBlockIndex(newBlockEdits.length)
               }}

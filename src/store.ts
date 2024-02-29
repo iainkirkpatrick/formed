@@ -5,6 +5,7 @@ import { BlockEditT } from './types/block'
 // array of objects, which are block atoms and editing metadata
 export interface BlockEditWithMetadataT {
   blockAtom: Atom<BlockEditT>
+  id: string
   type: string
   // isEditing: boolean
 }

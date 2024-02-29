@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { newEditSelectBlock } from '@/utils/newEditSelectBlock';
 
 interface NewBlockButtonProps {
-	onAdd: (block: BlockEditT) => void
+	onAdd: (block: any) => void // TODO: type this
 }
 
 export default function NewBlockButton ({

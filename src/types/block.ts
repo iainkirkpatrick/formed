@@ -1,6 +1,7 @@
 import { Atom } from "jotai"
 
 export interface BlockBaseT {
+	id: string
 	type: string
 	// name: string
 }

@@ -12,10 +12,9 @@ export default function EditInput ({
 	blockAtom
 }: EditInputProps) {
 	const [block] = useAtom(blockAtom)
-	console.log({ block })
 
 	return (
-		<div className='flex flex-col max-w-lg gap-2'>
+		<div className='flex flex-col items-start gap-2'>
 			<div className='flex flex-col'>
 				{!!block.label && (
 					<label className='font-semibold'>{block.label}</label>

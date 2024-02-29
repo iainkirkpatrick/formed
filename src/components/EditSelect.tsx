@@ -21,7 +21,7 @@ export default function EditSelect ({
 	const [blockOptions] = useAtom(block.options)
 
 	return (
-		<div className='flex flex-col max-w-lg gap-2'>
+		<div className='flex flex-col items-start gap-2'>
 			{!!block.label && (
 				<label>{block.label}</label>
 			)}
