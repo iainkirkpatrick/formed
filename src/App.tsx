@@ -26,6 +26,7 @@ import { blockEditsAtom, currentDraggingBlockIdAtom, currentEditingBlockIndexAto
 import { genId } from './utils/genId'
 
 import SortableButtonWrapper from './components/SortableButtonWrapper';
+import { renderEditingComponent } from './utils/renderEditingComponent';
 
 
 function App() {
@@ -76,24 +77,10 @@ function App() {
                   <SortableButtonWrapper
                     key={b.id}
                     id={b.id}
-                    className='py-4 border-y-2 border-white hover:border-red-500/80'
+                    className={`py-4 border-y-2 border-white ${!currentDraggingBlockId ? 'hover:border-red-500/80' : ''}`}
                     onClick={() => setEditingBlockIndex(i + 1)}
                   >
-                    {b.type === 'input' ? (
-                      <EditInput
-                        key={b.id}
-                        // @ts-ignore: TODO figure out type narrowing with Atom
-                        blockAtom={b.blockAtom}
-                      />
-                    ) : b.type === 'select' ? (
-                      <EditSelect
-                        key={b.id}
-                        // @ts-ignore: TODO figure out type narrowing with Atom
-                        blockAtom={b.blockAtom}
-                      />
-                    ) : (
-                      <p>Missing block type!</p>
-                    )}
+                    {renderEditingComponent(b)}
                   </SortableButtonWrapper>
                 ))}
                 <NewBlockButton
@@ -109,7 +96,9 @@ function App() {
                 />
                 </div>
               </SortableContext>
-              {/* <DragOverlay>{currentDraggingBlockId ? }</DragOverlay> */}
+              <DragOverlay>{currentDraggingBlockId ? (
+                renderEditingComponent(blockEdits.find(b => b.id === currentDraggingBlockId)!)
+              ) : null}</DragOverlay>
             </DndContext>
           </div>
           <div className='flex flex-col w-2/5'>
