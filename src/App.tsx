@@ -1,3 +1,4 @@
+import { useRef, useLayoutEffect, useState } from 'react';
 import {
   DndContext, 
   DragOverlay,
@@ -16,12 +17,10 @@ import {
 import { atom, useAtom } from 'jotai'
 
 import NewBlockButton from '@/components/NewBlockButton';
-import EditInput from '@/components/EditInput';
-import EditSelect from '@/components/EditSelect';
 import EditInputProperties from './components/EditInputProperties';
 import EditSelectProperties from './components/EditSelectProperties';
 
-import { blockEditsAtom, currentDraggingBlockIdAtom, currentEditingBlockIndexAtom, currentEditingBlockWithMetadataAtom } from './store';
+import { blockEditsAtom, currentDraggingBlockIdAtom, currentEditingBlockIndexAtom, currentEditingBlockPositionAtom, currentEditingBlockWithMetadataAtom } from './store';
 
 import { genId } from './utils/genId'
 
@@ -33,7 +32,16 @@ function App() {
   const [blockEdits, setBlockEdits] = useAtom(blockEditsAtom)
   const [_, setEditingBlockIndex] = useAtom(currentEditingBlockIndexAtom)
   const [editingBlockWithMetadata] = useAtom(currentEditingBlockWithMetadataAtom)
+  const [currentEditingBlockPosition, setCurrentEditingBlockPosition] = useAtom(currentEditingBlockPositionAtom)
   const [currentDraggingBlockId, setCurrentDraggingBlockId] = useAtom(currentDraggingBlockIdAtom)
+
+  const propertiesContainerRef = useRef(null)
+  const [propertiesContainerTop, setPropertiesContainerTop] = useState<number | null>(null)
+  useLayoutEffect(() => {
+    if (propertiesContainerRef.current && currentEditingBlockPosition) {
+      setPropertiesContainerTop(Math.max((currentEditingBlockPosition.top + currentEditingBlockPosition.halfHeight) - (propertiesContainerRef.current.offsetHeight / 2),0))
+    }
+  }, [currentEditingBlockPosition])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -72,13 +80,20 @@ function App() {
                 items={blockEdits.map(b => b.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div className='flex flex-col gap-2'>
+                <div className='relative flex flex-col gap-2'>
                 {blockEdits.map((b, i) => (
                   <SortableButtonWrapper
                     key={b.id}
                     id={b.id}
                     className={`py-4 border-y-2 border-white ${!currentDraggingBlockId ? 'hover:border-red-500/80' : ''}`}
-                    onClick={() => setEditingBlockIndex(i + 1)}
+                    onClick={e => {
+                      setEditingBlockIndex(i + 1)
+
+                      const element = e.currentTarget;
+                      setCurrentEditingBlockPosition({
+                        top: element.offsetTop,
+                        halfHeight: element.offsetHeight / 2, })
+                      }}
                   >
                     {renderEditingComponent(b)}
                   </SortableButtonWrapper>
@@ -101,22 +116,24 @@ function App() {
               ) : null}</DragOverlay>
             </DndContext>
           </div>
-          <div className='flex flex-col w-2/5'>
-            {!!editingBlockWithMetadata && (
-              editingBlockWithMetadata.type === 'input' ? (
-                <EditInputProperties
-                  // @ts-ignore: TODO figure out type narrowing with Atom
-                  blockAtom={editingBlockWithMetadata.blockAtom}
-                />
-              ) : editingBlockWithMetadata.type === 'select' ? (
-                <EditSelectProperties
-                  // @ts-ignore: TODO figure out type narrowing with Atom
-                  blockAtom={editingBlockWithMetadata.blockAtom}
-                />
-              ) : (
-			          <p>Missing block type for properties!</p>
-              )
-            )}
+          <div className='relative flex flex-col w-2/5'>
+            <div ref={propertiesContainerRef} className='absolute' style={propertiesContainerTop ? { top: propertiesContainerTop } : {}}>
+              {!!editingBlockWithMetadata && (
+                editingBlockWithMetadata.type === 'input' ? (
+                  <EditInputProperties
+                    // @ts-ignore: TODO figure out type narrowing with Atom
+                    blockAtom={editingBlockWithMetadata.blockAtom}
+                  />
+                ) : editingBlockWithMetadata.type === 'select' ? (
+                  <EditSelectProperties
+                    // @ts-ignore: TODO figure out type narrowing with Atom
+                    blockAtom={editingBlockWithMetadata.blockAtom}
+                  />
+                ) : (
+                  <p>Missing block type for properties!</p>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>

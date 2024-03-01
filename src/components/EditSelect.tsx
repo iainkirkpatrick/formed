@@ -31,7 +31,7 @@ export default function EditSelect ({
 				</SelectTrigger>
 				<SelectContent>
 					{blockOptions.map(o => (
-						<SelectItem value={o.value}>{o.value}</SelectItem>
+						<SelectItem key={o.value} value={o.value}>{o.value}</SelectItem>
 					))}
 				</SelectContent>
 			</Select>

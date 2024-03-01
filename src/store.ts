@@ -23,4 +23,10 @@ export const currentEditingBlockWithMetadataAtom = atom(get => {
   }
 })
 
+export interface CurrentEditingBlockPositionT {
+  top: number
+  halfHeight: number
+}
+export const currentEditingBlockPositionAtom = atom<CurrentEditingBlockPositionT | null>(null)
+
 export const currentDraggingBlockIdAtom = atom<string | null>(null)
