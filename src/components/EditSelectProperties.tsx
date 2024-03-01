@@ -26,9 +26,11 @@ export default function EditSelectProperties ({
 							className=''
 							placeholder='Add option'
 							value={o.value}
+							// @ts-ignore: fix type
 							onChange={(e) => setBlockOptions(blockOptions.slice(0, i).concat({ value: e.target.value }).concat(blockOptions.slice(i + 1)))}
 						/>
 					))}
+					{/* @ts-ignore: fix type */}
 					<Button onClick={() => setBlockOptions([...blockOptions, { value: `Option ${blockOptions.length + 1}` }])}>Add option</Button>
 				</div>
 			</div>
@@ -38,6 +40,7 @@ export default function EditSelectProperties ({
 					className=''
 					placeholder='Add placeholder'
 					value={block.placeholder}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, placeholder: e.target.value })}
 				/>
 			</div>
@@ -47,6 +50,7 @@ export default function EditSelectProperties ({
 					className=''
 					placeholder='Add a label'
 					value={block.label}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, label: e.target.value })}
 				/>
 			</div>
@@ -56,6 +60,7 @@ export default function EditSelectProperties ({
 					className=''
 					placeholder='Add help text'
 					value={block.helpText}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, helpText: e.target.value })}
 				/>
 			</div>

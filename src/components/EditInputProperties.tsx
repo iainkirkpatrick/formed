@@ -21,6 +21,7 @@ export default function EditInputProperties ({
 					className=''
 					placeholder='Add placeholder'
 					value={block.placeholder || ''}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, placeholder: e.target.value })}
 				/>
 			</div>
@@ -30,6 +31,7 @@ export default function EditInputProperties ({
 					className=''
 					placeholder='Add a label'
 					value={block.label || ''}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, label: e.target.value })}
 				/>
 				{/* <input
@@ -45,6 +47,7 @@ export default function EditInputProperties ({
 					className=''
 					placeholder='Add help text'
 					value={block.helpText || ''}
+					// @ts-ignore: fix type
 					onChange={(e) => setBlock({ ...block, helpText: e.target.value })}
 				/>
 			</div>

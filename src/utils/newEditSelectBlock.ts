@@ -2,8 +2,11 @@ import { atom } from "jotai";
 
 import { BlockSelectEditT } from "@/types/block";
 
+import { genId } from "./genId";
+
 export function newEditSelectBlock (): BlockSelectEditT {
 	return {
+		id: genId(),
 		type: 'select',
 		label: '',
 		helpText: '',

@@ -1,8 +1,6 @@
 import { PlusIcon } from '@radix-ui/react-icons'
 
-import { BlockEditT } from '@/types/block';
-
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/DropdownMenu';
 import { Button } from '@/components/ui/Button';
 
 import { newEditSelectBlock } from '@/utils/newEditSelectBlock';

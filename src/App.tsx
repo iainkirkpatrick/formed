@@ -39,6 +39,7 @@ function App() {
   const [propertiesContainerTop, setPropertiesContainerTop] = useState<number | null>(null)
   useLayoutEffect(() => {
     if (propertiesContainerRef.current && currentEditingBlockPosition) {
+      // @ts-ignore: TODO offsetHeight on current
       setPropertiesContainerTop(Math.max((currentEditingBlockPosition.top + currentEditingBlockPosition.halfHeight) - (propertiesContainerRef.current.offsetHeight / 2),0))
     }
   }, [currentEditingBlockPosition])
@@ -63,13 +64,14 @@ function App() {
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
+              // @ts-ignore: TODO active.id
               onDragStart={e => setCurrentDraggingBlockId(e.active.id)}
-              onDragEnd={e => setCurrentDraggingBlockId(null)}
-              onDragCancel={e => setCurrentDraggingBlockId(null)}
+              onDragEnd={() => setCurrentDraggingBlockId(null)}
+              onDragCancel={() => setCurrentDraggingBlockId(null)}
               onDragOver={event => {
                 const {active, over} = event;
                 
-                if (active.id !== over.id) {
+                if (over && active.id !== over.id) {
                   const oldIndex = blockEdits.findIndex(b => b.id === active.id)
                   const newIndex = blockEdits.findIndex(b => b.id === over.id)
                   setBlockEdits(arrayMove(blockEdits, oldIndex, newIndex))
